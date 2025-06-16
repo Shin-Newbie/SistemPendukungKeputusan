@@ -1,0 +1,166 @@
+{% extends 'auth_base.html' %}
+{% load static %}
+
+{% block title %}Registrasi{% endblock %}
+
+{% block style %}
+<!-- Style kustom dari halaman registrasi Anda -->
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    overflow: auto; /* Izinkan scroll karena form lebih panjang */
+  }
+
+  .page-header {
+    min-height: 100vh;
+    background-image: url("{% static 'assets/img/background.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 3rem 0; /* Tambahkan padding vertikal */
+  }
+
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .card-header-wrapper {
+    position: relative;
+    padding-top: 3rem;
+    z-index: 1;
+  }
+
+  .card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-header-custom {
+    background: linear-gradient(195deg, #42424a, #1a1a1a);
+    padding: 1.5rem 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(33, 33, 33, 0.4);
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .card-body {
+    padding-top: 3.5rem !important;
+  }
+
+  .form-floating > .form-select {
+      height: calc(3.5rem + 2px);
+      line-height: 1.25;
+      padding-top: 1.625rem;
+      padding-bottom: 0.625rem;
+  }
+
+  .btn-dark-custom {
+    background-color: #42424a;
+    border-color: #42424a;
+    color: white;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* ===== PERBAIKAN DI SINI ===== */
+  /* Mengganti warna focus ring biru bawaan Bootstrap */
+    .btn-dark-custom:hover {
+    background-color: #1a1a1a; /* Warna lebih gelap saat disentuh */
+    border-color: #1a1a1a;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+    transform: translateY(-1px); /* Efek sedikit terangkat */
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #42424a;
+    box-shadow: 0 0 0 0.25rem rgba(66, 74, 82, 0.5);
+  }
+
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<main class="main-content">
+  <div class="page-header">
+    <span class="mask"></span>
+    <div class="container my-auto">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-8 col-12">
+          <div class="card card-header-wrapper">
+            <div class="card-header-custom text-center">
+              <h4 class="text-white fw-bold mb-0">Buat Akun Baru</h4>
+            </div>
+            <div class="card-body">
+              <form method="POST" role="form" class="text-start">
+                {% csrf_token %}
+                
+                <!-- Render setiap field secara manual untuk kontrol penuh atas layout -->
+                <div class="form-floating mb-3">
+                  {{ form.nama_lengkap }}
+                  <label for="{{ form.nama_lengkap.id_for_label }}">{{ form.nama_lengkap.label }}</label>
+                  {% for error in form.nama_lengkap.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="form-floating mb-3">
+                  {{ form.email }}
+                  <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                  {% for error in form.email.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="form-floating mb-3">
+                  {{ form.sekolah }}
+                  <label for="{{ form.sekolah.id_for_label }}">{{ form.sekolah.label }}</label>
+                   {% for error in form.sekolah.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="form-floating mb-3">
+                  {{ form.kelas }}
+                  <label for="{{ form.kelas.id_for_label }}">{{ form.kelas.label }}</label>
+                   {% for error in form.kelas.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+                
+                <div class="form-floating mb-3">
+                  {{ form.password }}
+                  <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                   {% for error in form.password.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="form-floating mb-3">
+                  {{ form.konfirmasi_password }}
+                  <label for="{{ form.konfirmasi_password.id_for_label }}">{{ form.konfirmasi_password.label }}</label>
+                   {% for error in form.konfirmasi_password.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-dark-custom w-100 my-4 mb-2">Daftar</button>
+                </div>
+
+                <p class="mt-4 text-sm text-center">
+                  Sudah Memiliki Akun?
+                  <a href="{% url 'account:login' %}" class="text-danger fw-bold">Login di sini</a>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}

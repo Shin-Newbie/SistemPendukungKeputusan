@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | SPK Jurusan AHP{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="text-center mb-5 animate__animated animate__fadeInDown">
+                <h1 class="display-4 fw-bold text-dark mb-2">Selamat Datang, <span class="text-primary">{{ request.user.account_siswa.nama_lengkap }}</span>!</h1>
+                <p class="lead text-muted fst-italic">Sistem Pendukung Keputusan Pemilihan Jurusan Menggunakan Metode AHP</p>
+                <hr class="w-25 mx-auto border-primary my-4">
+            </div>
+
+            <div class="row mb-5 g-4">
+                <div class="col-md-6 col-lg-3 animate__animated animate__zoomIn">
+                    <div class="card shadow-sm border-start border-primary border-4 h-100">
+                        <div class="card-body text-center d-flex flex-column justify-content-center align-items-center p-4">
+                            <i class="fas fa-sitemap fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title text-muted mb-1">Total Kriteria</h5>
+                            <h3 class="fw-bold text-dark">{{ total_kriteria }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 animate__animated animate__zoomIn animate__delay-1s">
+                    <div class="card shadow-sm border-start border-success border-4 h-100">
+                        <div class="card-body text-center d-flex flex-column justify-content-center align-items-center p-4">
+                            <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
+                            <h5 class="card-title text-muted mb-1">Total Jurusan</h5>
+                            <h3 class="fw-bold text-dark">{{ total_jurusan }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 animate__animated animate__zoomIn animate__delay-2s">
+                    <div class="card shadow-sm border-start border-warning border-4 h-100">
+                        <div class="card-body text-center d-flex flex-column justify-content-center align-items-center p-4">
+                            <i class="fas fa-users fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title text-muted mb-1">Total Siswa</h5>
+                            <h3 class="fw-bold text-dark">{{ total_pengguna }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 animate__animated animate__zoomIn animate__delay-3s">
+                    <div class="card shadow-sm border-start border-info border-4 h-100">
+                        <div class="card-body text-center d-flex flex-column justify-content-center align-items-center p-4">
+                            <i class="fas fa-vote-yea fa-3x text-info mb-3"></i>
+                            <h5 class="card-title text-muted mb-1">Total Preferensi</h5>
+                            <h3 class="fw-bold text-dark">{{ total_preferensi }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-lg rounded-4 border-0 mb-5 animate__animated animate__fadeInUp">
+                <div class="card-body p-4 p-md-5 text-center">
+                    <h4 class="mb-4 fw-bold text-dark">Mulai Perjalanan Rekomendasi Anda!</h4>
+                    <p class="text-muted mb-4">Langkah-langkah berikut akan membantu Anda menemukan jurusan yang paling cocok.</p>
+                    <div class="d-grid gap-3 d-md-block">
+                        <a href="{% url 'dashboard:input_nilai' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-sm me-md-3 mb-3 mb-md-0 ">
+                            <i class="fas fa-edit me-2"></i> Input Nilai Mata Pelajaran
+                        </a>
+                        <a href="{% url 'dashboard:hitung_ahp' %}" class="btn btn-success btn-lg rounded-pill px-5 py-3 shadow-sm me-md-3 mb-3 mb-md-0 ">
+                            <i class="fas fa-calculator me-2"></i> Lakukan Analisis AHP
+                        </a>
+                        <a href="{% url 'dashboard:hasil_rekomendasi' %}" class="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow-sm ">
+                            <i class="fas fa-chart-bar me-2"></i> Lihat Hasil Rekomendasi
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-lg rounded-4 border-0 animate__animated animate__fadeInUp animate__delay-3s">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="mb-4 fw-bold text-dark">Tentang Sistem Ini <i class="fas fa-info-circle ms-2 text-info"></i></h4>
+                    <p class="card-text text-muted">
+                        Sistem ini dirancang untuk **mendukung keputusan** siswa dalam memilih jurusan di perguruan tinggi atau sekolah menengah atas. Kami menggunakan **metode AHP (Analytical Hierarchy Process)**, sebuah teknik pengambilan keputusan multikriteria yang membantu Anda memprioritaskan pilihan berdasarkan kriteria yang Anda nilai penting.
+                    </p>
+                    <p class="card-text text-muted mb-0">
+                        Dengan sistem ini, Anda dapat:
+                        <ul>
+                            <li>Menginput nilai mata pelajaran sebagai bagian dari kriteria.</li>
+                            <li>Melakukan perbandingan berpasangan antar kriteria untuk mendapatkan bobot preferensi Anda.</li>
+                            <li>Mendapatkan rekomendasi jurusan yang paling cocok dengan profil dan preferensi Anda.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}

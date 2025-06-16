@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil Pengguna{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <h2 class="text-center mb-5 fw-bold text-dark animate__animated animate__fadeInDown">Profil Pengguna Anda</h2>
+
+            {% if messages %}
+                <div class="mb-4 animate__animated animate__fadeIn">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="card mb-5 shadow-lg rounded-4 border-0 animate__animated animate__fadeInUp">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="text-center mb-5 fw-bold text-dark">Informasi Pribadi</h4>
+
+                    <div class="row mb-4 border-bottom pb-3">
+                        <div class="col-sm-4 text-muted fw-semibold">Nama Lengkap</div>
+                        <div class="col-sm-8 text-dark fw-medium">{{ request.user.account_siswa.nama_lengkap }}</div>
+                    </div>
+                    <div class="row mb-4 border-bottom pb-3">
+                        <div class="col-sm-4 text-muted fw-semibold">Email</div>
+                        <div class="col-sm-8 text-dark fw-medium">{{ request.user.email }}</div>
+                    </div>
+                    <div class="row mb-4 border-bottom pb-3">
+                        <div class="col-sm-4 text-muted fw-semibold">Asal Sekolah</div>
+                        <div class="col-sm-8 text-dark fw-medium">{{ request.user.account_siswa.sekolah }}</div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-sm-4 text-muted fw-semibold">Kelas</div>
+                        <div class="col-sm-8 text-dark fw-medium">{{ request.user.account_siswa.kelas }}</div>
+                    </div>
+
+                    {% comment %} <div class="text-center mt-4">
+                        <a class="btn btn-primary rounded-pill px-5 py-2 shadow-sm animate__animated animate__pulse animate__infinite" href="#">
+                            <i class="fas fa-edit me-2"></i> Edit Profil
+                        </a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+
+            <div class="card shadow-lg rounded-4 border-0 animate__animated animate__fadeInUp animate__delay-1s">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="mb-5 fw-bold text-dark text-center">Analisis Nilai Mata Pelajaran</h4>
+
+                    {% if nilai_mapel %}
+                        <div class="chart-container mb-4" style="position: relative; height:450px; width:100%">
+                            <canvas id="nilaiMapelChart"></canvas>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info text-center animate__animated animate__fadeIn py-4">
+                            <i class="fas fa-info-circle fa-2x mb-3 text-info"></i>
+                            <h5 class="fw-bold">Belum Ada Data Nilai!</h5>
+                            <p class="mb-0">Silakan masukkan nilai mata pelajaran Anda untuk melihat ringkasan visual di sini.</p>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="{% url 'dashboard:input_nilai' %}" class="btn btn-outline-dark rounded-pill px-5 py-2 animate__animated animate__pulse animate__infinite">
+                                <i class="fas fa-plus-circle me-2"></i> Masukkan Nilai Sekarang
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var nilaiMapelData = {{ nilai_mapel|safe }};
+
+    if (Object.keys(nilaiMapelData).length > 0) {
+        var labels = Object.keys(nilaiMapelData);
+        var dataValues = Object.values(nilaiMapelData);
+
+        function getColor(value) {
+            if (value >= 75) {
+                return 'rgba(40, 167, 69, 0.8)'; // Hijau (success) lebih solid
+            } else if (value >= 60) {
+                return 'rgba(255, 193, 7, 0.8)';  // Kuning (warning) lebih solid
+            } else {
+                return 'rgba(220, 53, 69, 0.8)'; // Merah (danger) lebih solid
+            }
+        }
+
+        var backgroundColors = dataValues.map(value => getColor(value));
+        var borderColors = dataValues.map(value => getColor(value).replace('0.8', '1')); // Border lebih solid
+
+        var ctx = document.getElementById('nilaiMapelChart').getContext('2d');
+        var nilaiMapelChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Nilai (%)',
+                    data: dataValues,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1,
+                    borderRadius: 5, // Sudut bulat pada batang chart
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1000, // Durasi animasi muncul chart
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleFont: { weight: 'bold' },
+                        bodyFont: { size: 14 },
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.label + ': ' + context.parsed.y + '%';
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribusi Nilai Mata Pelajaran', // Judul chart
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        color: '#343a40', // Warna judul chart
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%'; // Tambahkan '%' pada label sumbu Y
+                            },
+                            font: { size: 12 }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.08)', // Garis grid Y yang lebih terlihat
+                        },
+                        title: {
+                            display: true,
+                            text: 'Nilai (%)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            color: '#495057'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 12 },
+                            autoSkip: false,
+                            maxRotation: 45,
+                            minRotation: 0,
+                            color: '#495057'
+                        },
+                        grid: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Mata Pelajaran',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            color: '#495057'
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

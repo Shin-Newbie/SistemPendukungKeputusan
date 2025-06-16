@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Hasil Rekomendasi Jurusan{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg rounded-4 border-0 animate__animated animate__fadeIn">
+                <div class="card-header bg-gradient-dark text-white p-4 rounded-top-4">
+                    <h3 class="text-center mb-0 fw-bold text-dark">Rekomendasi Jurusan Terbaik</h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="lead text-center text-muted mb-4">
+                        Berdasarkan nilai yang Anda masukkan, berikut adalah daftar jurusan yang paling sesuai untuk Anda, diurutkan berdasarkan skor tertinggi.
+                    </p>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center align-middle mb-4">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col" class="py-3">Peringkat</th>
+                                    <th scope="col" class="py-3">Jurusan</th>
+                                    <th scope="col" class="py-3">Skor Kecocokan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in hasil %}
+                                <tr class="animate__animated animate__fadeInUp animate__delay-{{ forloop.counter0|add:'1' }}s"> {# Menggunakan forloop.counter0 untuk delay unik #}
+                                    <td class="py-3 fw-bold">{{ forloop.counter }}</td> {# Menambahkan nomor peringkat #}
+                                    <td class="py-3 fw-bold text-dark">{{ data.jurusan.nama }}</td> 
+                                    <td class="py-3 fw-bold text-dark">{{ data.skor|floatformat:4 }}</td> {# Menampilkan skor dengan 4 desimal dan warna primary #}
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="py-4 text-muted">
+                                        <i class="fas fa-info-circle me-2"></i> Belum ada hasil rekomendasi. Silakan input nilai terlebih dahulu.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-dark btn-lg px-4 shadow-sm animate__animated animate__fadeInUp">
+                            <i class="fas fa-arrow-left me-2"></i> Kembali ke Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}Autentikasi{% endblock %} - SPK Penentuan Jurusan</title>
+  <link rel="icon" href="{% static 'assets/img/kaiadmin/ahp.png' %}" type="image/x-icon" />
+  <!-- Aset CSS dari Kaiadmin -->
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}" />
+
+  <!-- Ini adalah style dari halaman login Anda, dipindahkan ke sini -->
+  {% block style %}{% endblock %}
+</head>
+<body>
+
+  <!-- Konten spesifik halaman (seperti login.html) akan dimasukkan di sini -->
+  {% block content %}
+  {% endblock content %}
+
+  <!-- Core JS Files (Penting untuk notifikasi) -->
+  <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+  
+  <!-- Script Notifikasi Dinamis dari Django -->
+  {% if messages %}
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          {% for message in messages %}
+              var content = {};
+              var state = 'info'; // Default state
+
+              {% if message.tags == 'success' %}
+                  content.icon = 'fas fa-check-circle';
+                  content.title = 'Berhasil';
+                  state = 'success';
+              {% elif message.tags == 'error' %}
+                  content.icon = 'fas fa-exclamation-circle';
+                  content.title = 'Kesalahan';
+                  state = 'danger';
+              {% elif message.tags == 'warning' %}
+                  content.icon = 'fas fa-exclamation-triangle';
+                  content.title = 'Peringatan';
+                  state = 'warning';
+              {% else %}
+                  content.icon = 'fas fa-info-circle';
+                  content.title = 'Informasi';
+                  state = 'info';
+              {% endif %}
+
+              content.message = '{{ message|escapejs }}';
+
+              $.notify(content, {
+                  type: state,
+                  placement: { from: "top", align: "center" },
+                  time: 1000,
+                  delay: 3000,
+              });
+          {% endfor %}
+      });
+  </script>
+  {% endif %}
+
+</body>
+</html>

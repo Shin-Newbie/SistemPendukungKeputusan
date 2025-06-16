@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bobot Prioritas Kriteria{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg rounded-4 border-0 animate__animated animate__fadeInUp">
+                <div class="card-header text-white p-4 rounded-top-4" style="background: linear-gradient(195deg, #42424a, #1a1a1a) !important;">
+                    <h3 class="text-center mb-0 fw-bold">Bobot Prioritas Kriteria</h3>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <p class="lead text-center text-muted mb-4">
+                        Berikut adalah hasil perhitungan bobot prioritas untuk setiap kriteria berdasarkan metode AHP.
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center align-middle mb-4">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col" class="py-3 text-start">Kriteria</th>
+                                    <th scope="col" class="py-3">Bobot Prioritas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for kriteria, bobot in kriteria_zipped %}
+                                <tr class="animate__animated animate__fadeIn" style="--animate-delay: calc({{ forloop.counter0 }} * 0.1s);">
+                                    <td class="py-3 fw-bold text-start">{{ kriteria.nama }}</td>
+                                    <td class="py-3">{{ bobot|floatformat:4 }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-muted py-4">Data kriteria atau perbandingan belum diinput.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h4 class="text-center mb-3 text-dark fw-bold animate__animated animate__fadeIn">Uji Konsistensi</h4>
+                    <div class="alert alert-secondary text-center animate__animated animate__fadeIn" style="--animate-delay: 0.5s;" role="alert">
+                        <p class="mb-1"><strong>Consistency Index (CI):</strong> <span class="fw-bold">{{ CI|floatformat:4 }}</span></p>
+                        <p class="mb-0"><strong>Consistency Ratio (CR):</strong> <span class="fw-bold">{{ CR|floatformat:4 }}</span></p>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        {% if is_konsisten %}
+                            <p class="text-success fw-bold fs-5 animate__animated animate__bounceIn" style="--animate-delay: 0.7s;">
+                                <i class="fas fa-check-circle me-2"></i> Perbandingan Konsisten!
+                            </p>
+                        {% else %}
+                            <p class="text-danger fw-bold fs-5 animate__animated animate__shakeX" style="--animate-delay: 0.7s;">
+                                <i class="fas fa-exclamation-triangle me-2"></i> Perbandingan Tidak Konsisten!
+                            </p>
+                            <p class="text-muted small">Nilai CR > 0.1. Mohon tinjau kembali data perbandingan kriteria.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-dark btn-lg px-4 shadow-sm animate__animated animate__fadeInUp" style="--animate-delay: 1s;">
+                            <i class="fas fa-arrow-left me-2"></i> Kembali ke Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
