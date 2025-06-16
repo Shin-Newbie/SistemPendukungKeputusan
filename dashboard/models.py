@@ -30,7 +30,7 @@ class InputSiswa(models.Model):
     nilai = models.FloatField()
 
     def __str__(self):
-        return f"{self.user.username} - {self.kriteria.nama}: {self.nilai}"
+        return f"{self.user.email} - {self.kriteria.nama}: {self.nilai}"
 
 class MatriksPerbandinganKriteria(models.Model):
     kriteria1 = models.ForeignKey(Kriteria, on_delete=models.CASCADE, related_name='kriteria1')

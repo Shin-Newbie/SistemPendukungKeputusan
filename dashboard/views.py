@@ -2,37 +2,33 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Kriteria, Jurusan, PreferensiJurusan, InputSiswa
 from .ahp_logic import AHPProcessor
-from .forms import InputNilaiForm # <- Pastikan impor ini benar
+from .forms import InputNilaiForm
 from django.views.decorators.cache import never_cache
 from account.models import CustomUser
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin # <-- 1. Import mixin
+from django.views.generic import TemplateView
 
-@login_required
-@never_cache
-def dashboard_home(request):
-    """
-    Menampilkan halaman dashboard utama.
-    """
-    total_kriteria = Kriteria.objects.count()
-    total_jurusan = Jurusan.objects.count()
-    total_preferensi = PreferensiJurusan.objects.count()
-    total_pengguna = CustomUser.objects.filter(jenis_user=CustomUser.JenisUser.SISWA).count()
+class HomeView(LoginRequiredMixin, TemplateView): 
+    template_name = 'dashboard/home.html'
+    login_url = 'account:login'
 
-    context = {
-        'page_title': 'Dashboard',
-        'total_kriteria': total_kriteria,
-        'total_jurusan': total_jurusan,
-        'total_preferensi': total_preferensi,
-        'total_pengguna': total_pengguna,
-    }
-    return render(request, 'dashboard/home.html', context)
+    # Timpa metode get_context_data untuk menambahkan data ke template
+    def get_context_data(self, **kwargs):
+        # Panggil implementasi dasar dulu untuk mendapatkan konteks
+        context = super().get_context_data(**kwargs)
 
+        # Tambahkan data konteks Anda dari fungsi dashboard_home
+        context['page_title'] = 'Dashboard'
+        context['total_kriteria'] = Kriteria.objects.count()
+        context['total_jurusan'] = Jurusan.objects.count()
+        context['total_preferensi'] = PreferensiJurusan.objects.count()
+        context['total_pengguna'] = CustomUser.objects.filter(jenis_user=CustomUser.JenisUser.SISWA).count()
+
+        return context
 @login_required
 @never_cache
 def input_nilai(request):
-    """
-    Menangani input nilai dari siswa menggunakan Django Form.
-    """
     kriteria_list = Kriteria.objects.all().order_by('id')
     
     if request.method == 'POST':
@@ -60,9 +56,6 @@ def input_nilai(request):
 @login_required
 @never_cache
 def hasil_rekomendasi(request):
-    """
-    Menampilkan hasil rekomendasi dengan memanggil AHPProcessor.
-    """
     processor = AHPProcessor(user=request.user)
     hasil = processor.dapatkan_rekomendasi()
 
@@ -75,9 +68,6 @@ def hasil_rekomendasi(request):
 @login_required
 @never_cache
 def lihat_bobot_kriteria(request):
-    """
-    View terpisah untuk menampilkan hasil perhitungan AHP (bobot dan konsistensi).
-    """
     processor = AHPProcessor()
     processor.hitung_bobot_kriteria()
 
@@ -91,3 +81,6 @@ def lihat_bobot_kriteria(request):
         'page_title': 'Analisis Bobot Kriteria (AHP)'
     }
     return render(request, 'dashboard/hasil_ahp.html', context)
+
+
+
