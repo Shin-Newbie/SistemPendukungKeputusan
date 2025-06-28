@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-j_7&y&_)9yayp&!7cfo8dhf7b%6wmf%g07i9#c6dk+hm_!gr6m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['RafiAzis015.pythonanywhere.com']
 
 # Application definition
 
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'RafiAzis015$my_django_db',
         'USER': 'RafiAzis015',
         'PASSWORD': '12345678Rafi',
