@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'RafiAzis2311102441095$database_spk',
         'USER': 'RafiAzis2311102441095',
         'PASSWORD': 'databasespk',
-        'HOST': 'RafiAzis015.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
+        'HOST': 'RafiAzis231102441095.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
