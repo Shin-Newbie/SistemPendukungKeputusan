@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
         ADMINISTRATOR = 1, 'Administrator'
         SISWA = 2, 'Siswa'
 
-    username = None  # Remove default username
+    username = None  
     email = models.EmailField(_('alamat email'), unique=True)
     jenis_user = models.PositiveSmallIntegerField(
         _('jenis user'),

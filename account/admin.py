@@ -6,7 +6,7 @@ class AdminUserCustom(UserAdmin):
     list_display = ('email', 'nama_depan', 'nama_belakang', 'jenis_user', 'is_staff')
     list_filter = ('jenis_user', 'is_staff', 'is_superuser')
     search_fields = ('email', 'nama_depan', 'nama_belakang')
-    ordering = ('email',)  # Order by email
+    ordering = ('email',)  
     
     fieldsets = (
         (None, {'fields': ('email', 'password')}),

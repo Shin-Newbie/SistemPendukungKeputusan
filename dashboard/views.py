@@ -6,19 +6,16 @@ from .forms import InputNilaiForm
 from django.views.decorators.cache import never_cache
 from account.models import CustomUser
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin # <-- 1. Import mixin
+from django.contrib.auth.mixins import LoginRequiredMixin 
 from django.views.generic import TemplateView
 
 class HomeView(LoginRequiredMixin, TemplateView): 
     template_name = 'dashboard/home.html'
     login_url = 'account:login'
 
-    # Timpa metode get_context_data untuk menambahkan data ke template
     def get_context_data(self, **kwargs):
-        # Panggil implementasi dasar dulu untuk mendapatkan konteks
         context = super().get_context_data(**kwargs)
 
-        # Tambahkan data konteks Anda dari fungsi dashboard_home
         context['page_title'] = 'Dashboard'
         context['total_kriteria'] = Kriteria.objects.count()
         context['total_jurusan'] = Jurusan.objects.count()
@@ -26,6 +23,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context['total_pengguna'] = CustomUser.objects.filter(jenis_user=CustomUser.JenisUser.SISWA).count()
 
         return context
+    
 @login_required
 @never_cache
 def input_nilai(request):
@@ -38,7 +36,6 @@ def input_nilai(request):
             messages.success(request, 'Nilai Anda telah berhasil diinput! Hasil rekomendasi akan segera ditampilkan.')
             return redirect('dashboard:hasil_rekomendasi')
     else:
-        # Untuk GET request, muat nilai yang sudah ada sebelumnya ke dalam form
         initial_data = {}
         for kriteria in kriteria_list:
             input_siswa = InputSiswa.objects.filter(user=request.user, kriteria=kriteria).first()
