@@ -1,172 +1,244 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="id">
-<head>
+  <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{% block title %}SPK Pemilihan Jurusan{% endblock %}</title>
-    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="{% static 'assets/img/kaiadmin/ahp.png' %}" type="image/x-icon" />
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="{% static 'assets/img/kaiadmin/ahp.png' %}"
+      type="image/x-icon"
+    />
 
     <!-- Fonts and icons -->
     <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
     <script>
-        WebFont.load({
-            google: { families: ["Public Sans:300,400,500,600,700"] },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid",
-                    "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands",
-                    "simple-line-icons",
-                ],
-                urls: ["{% static 'assets/css/fonts.min.css' %}"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
+      WebFont.load({
+          google: { families: ["Public Sans:300,400,500,600,700"] },
+          custom: {
+              families: [
+                  "Font Awesome 5 Solid",
+                  "Font Awesome 5 Regular",
+                  "Font Awesome 5 Brands",
+                  "simple-line-icons",
+              ],
+              urls: ["{% static 'assets/css/fonts.min.css' %}"],
+          },
+          active: function () {
+              sessionStorage.fonts = true;
+          },
+      });
     </script>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}" />
-    
+
     <style>
-        .sidebar .nav > .nav-item.active > a {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .sidebar .nav > .nav-item.active > a p, .sidebar .nav > .nav-item.active > a i {
-            color: #ffffff !important;
-            font-weight: 600;
-        }
+      .sidebar .nav > .nav-item.active > a {
+          background: rgba(255, 255, 255, 0.1);
+      }
+      .sidebar .nav > .nav-item.active > a p, .sidebar .nav > .nav-item.active > a i {
+          color: #ffffff !important;
+          font-weight: 600;
+      }
     </style>
 
     {% block style %}{% endblock %}
-</head>
-<body>
+  </head>
+  <body>
     <div class="wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar" data-background-color="dark">
-            <div class="sidebar-logo">
-                <div class="logo-header" data-background-color="dark">
-                    <a href="{% url 'dashboard:home' %}" class="logo">
-                        <img src="{% static 'assets/img/kaiadmin/ahp.png' %}" alt="navbar brand" class="navbar-brand" height="30" />
-                    </a>
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar"><i class="gg-menu-right"></i></button>
-                        <button class="btn btn-toggle sidenav-toggler"><i class="gg-menu-left"></i></button>
-                    </div>
-                    <button class="topbar-toggler more"><i class="gg-more-vertical-alt"></i></button>
-                </div>
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <div class="logo-header" data-background-color="dark">
+            <a href="{% url 'dashboard:home' %}" class="logo">
+              <img
+                src="{% static 'assets/img/kaiadmin/ahp.png' %}"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="30"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
             </div>
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                <div class="sidebar-content">
-                    <ul class="nav nav-secondary">
-                        <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'dashboard:home' %}">
-                                <i class="fas fa-home"></i><p>Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="nav-section">
-                            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span><h4 class="text-section">Pages</h4>
-                        </li>
-                        <li class="nav-item {% if request.resolver_match.url_name == 'input_nilai' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'dashboard:input_nilai' %}">
-                                <i class="fas fa-keyboard"></i><p>Input Nilai</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {% if request.resolver_match.url_name == 'hasil_rekomendasi' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'dashboard:hasil_rekomendasi' %}">
-                                <i class="fas fa-check-circle"></i><p>Hasil Rekomendasi</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {% if request.resolver_match.url_name == 'hitung_ahp' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'dashboard:hitung_ahp' %}">
-                                <i class="fas fa-chart-line"></i><p>Bobot Kriteria</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
         </div>
-        <!-- End Sidebar -->
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li
+                class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+              >
+                <a class="nav-link" href="{% url 'dashboard:home' %}">
+                  <i class="fas fa-home"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon"
+                  ><i class="fa fa-ellipsis-h"></i
+                ></span>
+                <h4 class="text-section">Pages</h4>
+              </li>
+              <li
+                class="nav-item {% if request.resolver_match.url_name == 'input_nilai' %}active{% endif %}"
+              >
+                <a class="nav-link" href="{% url 'dashboard:input_nilai' %}">
+                  <i class="fas fa-keyboard"></i>
+                  <p>Input Nilai</p>
+                </a>
+              </li>
+              <li
+                class="nav-item {% if request.resolver_match.url_name == 'hasil_rekomendasi' %}active{% endif %}"
+              >
+                <a
+                  class="nav-link"
+                  href="{% url 'dashboard:hasil_rekomendasi' %}"
+                >
+                  <i class="fas fa-check-circle"></i>
+                  <p>Hasil Rekomendasi</p>
+                </a>
+              </li>
+              <li
+                class="nav-item {% if request.resolver_match.url_name == 'hitung_ahp' %}active{% endif %}"
+              >
+                <a class="nav-link" href="{% url 'dashboard:hitung_ahp' %}">
+                  <i class="fas fa-chart-line"></i>
+                  <p>Bobot Kriteria</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
 
-        <div class="main-panel">
-            <div class="main-header">
-                <div class="main-header-logo">
-                    <div class="logo-header" data-background-color="dark">
-                        <!-- ===== PERUBAHAN DI SINI ===== -->
-                        <a href="{% url 'dashboard:home' %}" class="logo">
-                            <img src="{% static 'assets/img/kaiadmin/ahp.png' %}" alt="navbar brand" class="navbar-brand" height="30" />
-                        </a>
-                        <div class="nav-toggle">
-                            <button class="btn btn-toggle toggle-sidebar"><i class="gg-menu-right"></i></button>
-                            <button class="btn btn-toggle sidenav-toggler"><i class="gg-menu-left"></i></button>
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <div class="logo-header" data-background-color="dark">
+              <!-- ===== PERUBAHAN DI SINI ===== -->
+              <a href="{% url 'dashboard:home' %}" class="logo">
+                <img
+                  src="{% static 'assets/img/kaiadmin/ahp.png' %}"
+                  alt="navbar brand"
+                  class="navbar-brand"
+                  height="30"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+          >
+            <div class="container-fluid">
+              <h3 class="fw-bold mb-0">{% block page_title %}{% endblock %}</h3>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <div
+                      class="avatar-sm bg-secondary d-flex align-items-center justify-content-center"
+                    >
+                      <i
+                        class="fas fa-user text-white"
+                        style="font-size: 1rem;"
+                      ></i>
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold"
+                        >{{
+                        request.user.account_siswa.nama_lengkap|default:request.user.email
+                        }}</span
+                      >
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div
+                            class="avatar-lg bg-secondary d-flex align-items-center justify-content-center"
+                          >
+                            <i class="fas fa-user fa-2x text-white"></i>
+                          </div>
+                          <div class="u-text">
+                            <h4>
+                              {{
+                              request.user.account_siswa.nama_lengkap|default:"User"
+                              }}
+                            </h4>
+                            <p class="text-muted">{{ request.user.email }}</p>
+                          </div>
                         </div>
-                        <button class="topbar-toggler more"><i class="gg-more-vertical-alt"></i></button>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'account:profile' %}"
+                          >Profil Saya</a
+                        >
+                        <div class="dropdown-divider"></div>
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'account:logout' %}"
+                          >Logout</a
+                        >
+                      </li>
                     </div>
-                </div>
-                <!-- Navbar Header -->
-                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-                    <div class="container-fluid">
-                        <h3 class="fw-bold mb-0">{% block page_title %}{% endblock %}</h3>
-                        
-                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                            <li class="nav-item topbar-user dropdown hidden-caret">
-                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                                    <div class="avatar-sm bg-secondary d-flex align-items-center justify-content-center">
-                                        <i class="fas fa-user text-white" style="font-size: 1rem;"></i>
-                                    </div>
-                                    <span class="profile-username">
-                                        <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">{{ request.user.account_siswa.nama_lengkap|default:request.user.email }}</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                    <div class="dropdown-user-scroll scrollbar-outer">
-                                        <li>
-                                            <div class="user-box">
-                                                <div class="avatar-lg bg-secondary d-flex align-items-center justify-content-center">
-                                                    <i class="fas fa-user fa-2x text-white"></i>
-                                                </div>
-                                                <div class="u-text">
-                                                    <h4>{{ request.user.account_siswa.nama_lengkap|default:"User" }}</h4>
-                                                    <p class="text-muted">{{ request.user.email }}</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="{% url 'account:profile' %}">Profil Saya</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <!-- End Navbar -->
+                  </ul>
+                </li>
+              </ul>
             </div>
-
-            <!-- Konten Utama dari Halaman Anak -->
-            <div class="container">
-                <div class="page-inner">
-                    {% block content %}
-                    {% endblock %}
-                </div>
-            </div>
-
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <div class="copyright">
-                        2025, made by Kelompok 3
-                    </div>
-                </div>
-            </footer>
+          </nav>
+          <!-- End Navbar -->
         </div>
+
+        <!-- Konten Utama dari Halaman Anak -->
+        <div class="container">
+          <div class="page-inner">{% block content %} {% endblock %}</div>
+        </div>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <div class="copyright">2025, made by Sulthan Rafi Azis</div>
+          </div>
+        </footer>
+      </div>
     </div>
     <!--   Core JS Files   -->
     <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
@@ -180,40 +252,62 @@
 
     {% if messages %}
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            {% for message in messages %}
-                var content = {};
-                var state = 'info';
-                
-                {% if message.tags == 'success' %}
-                    content.icon = 'fas fa-check-circle';
-                    content.title = 'Berhasil!';
-                    state = 'success';
-                {% elif message.tags == 'error' %}
-                    content.icon = 'fas fa-exclamation-circle';
-                    content.title = 'Terjadi Kesalahan!';
-                    state = 'danger';
-                {% elif message.tags == 'warning' %}
-                    content.icon = 'fas fa-exclamation-triangle';
-                    content.title = 'Peringatan';
-                    state = 'warning';
-                {% else %}
-                    content.icon = 'fas fa-info-circle';
-                    content.title = 'Informasi';
-                    state = 'info';
-                {% endif %}
+      document.addEventListener("DOMContentLoaded", function () {
+        // Siapkan array JavaScript untuk menampung pesan dari Django
+        var djangoMessages = [];
 
-                content.message = '{{ message|escapejs }}';
+        // Loop melalui pesan Django dan tambahkan ke array JavaScript
+        {% for message in messages %}
+          var content = {};
+          var state = 'info'; // Default state
 
-                $.notify(content, {
-                    type: state,
-                    placement: { from: "top", align: "center" },
-                    time: 1000,
-                    delay: 3000,
-                });
-            {% endfor %}
+          // Tentukan jenis notifikasi berdasarkan tag pesan
+          {% if message.tags == 'success' %}
+            content.icon = 'fas fa-check-circle';
+            content.title = 'Berhasil!';
+            state = 'success';
+          {% elif message.tags == 'error' %}
+            content.icon = 'fas fa-exclamation-circle';
+            content.title = 'Terjadi Kesalahan!';
+            state = 'danger';
+          {% elif message.tags == 'warning' %}
+            content.icon = 'fas fa-exclamation-triangle';
+            content.title = 'Peringatan';
+            state = 'warning';
+          {% else %}
+            // Default jika tidak ada tag yang cocok atau tag lain
+            content.icon = 'fas fa-info-circle';
+            content.title = 'Informasi';
+            state = 'info';
+          {% endif %}
+
+          // Isi pesan dari Django message framework
+          // Gunakan |escapejs untuk menghindari masalah kutipan dalam string JS
+          content.message = '{{ message|escapejs }}';
+
+          djangoMessages.push({
+            content: content,
+            state: state
+          });
+        {% endfor %}
+
+        // Loop melalui pesan yang sudah disiapkan dalam JavaScript
+        djangoMessages.forEach(function(msg) {
+          // Tampilkan notifikasi menggunakan plugin jQuery Notify
+          // Pastikan jQuery dan plugin Notify.js sudah dimuat di halaman Anda
+          $.notify(msg.content, {
+            type: msg.state,
+            placement: {
+              from: "top",
+              align: "center"
+            },
+            time: 1000, // Durasi notifikasi terlihat
+            delay: 3000, // Delay sebelum notifikasi hilang
+            // tambahkan opsi lain jika diperlukan oleh plugin notify Anda
+          });
         });
+      });
     </script>
     {% endif %}
-</body>
+  </body>
 </html>
